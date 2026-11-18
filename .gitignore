@@ -1,0 +1,5 @@
+# 公開するのは docs/ の静的サイトのみ
+*
+!.gitignore
+!docs/
+!docs/**
