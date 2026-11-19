@@ -1,5 +1,14 @@
-# 公開するのは docs/ の静的サイトのみ
+# 既定ですべて除外し、公開してよいものだけを明示的に含める
 *
 !.gitignore
 !docs/
 !docs/**
+!notes/
+!notes/*.md
+!ap-kamoku-b-strategy-report.md
+!.beads/
+!.beads/.gitignore
+!.beads/README.md
+!.beads/config.yaml
+!.beads/metadata.json
+!.beads/issues.jsonl
