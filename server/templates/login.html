@@ -1,0 +1,18 @@
+{{define "login"}}{{template "top" .}}
+<section class="card narrow">
+  <h1>ログイン</h1>
+  {{with .Error}}<p class="error">{{.}}</p>{{end}}
+  {{if .Google}}
+  <p class="muted">登録済みのGoogleアカウントでログインします。一度ログインすると90日間有効です。</p>
+  <a class="primary block google" href="{{.Base}}/auth/google">Googleでログイン</a>
+  {{end}}
+  {{if .Passphrase}}
+  <p class="muted">パスフレーズを入力してください（ローカル開発用）。</p>
+  <form method="post" action="{{.Base}}/login" class="stack">
+    <label for="password">パスフレーズ</label>
+    <input id="password" name="password" type="password" autocomplete="current-password" required autofocus>
+    <button type="submit" class="primary">ログイン</button>
+  </form>
+  {{end}}
+</section>
+{{template "bottom" .}}{{end}}

@@ -1,0 +1,41 @@
+{{define "plan"}}{{template "top" .}}
+<section class="card hero">
+  <p class="eyebrow">11/19〜11/29・学習 約{{.TotalHours}}時間</p>
+  <h1>問1＋メインから4分野で60点を取る</h1>
+  <p class="field-line">
+    <span class="tag">必須</span> 問1 情報セキュリティ
+    {{range .Main}}<span class="tag">メイン</span> {{.Label}} {{end}}
+    {{range .Insurance}}<span class="tag muted-tag">保険</span> {{.Label}} {{end}}
+  </p>
+  <p class="muted">分野は「分野」タブで変更できます。</p>
+</section>
+
+{{range .Phases}}
+<section class="phase">
+  <h2>{{.Name}}</h2>
+  <ul class="plan-list" hx-boost="true">
+    {{range .Rows}}
+    <li><a class="plan-row{{if .IsToday}} is-today{{end}}" href="{{$.Base}}/day/{{.Day.Date}}">
+      <span class="plan-date">{{short .Day.Date}}<small>（{{.Day.Dow}}）</small></span>
+      <span class="plan-main"><span class="plan-title">{{.Day.Title}}</span>
+        <span class="plan-meta">{{if .Day.ExamDay}}17:00〜19:30{{else}}{{hm .Stats.TotalMin}}{{end}}{{if .Day.Mock}}・模試{{end}}</span></span>
+      <span class="plan-state">{{if .Stats.Complete}}完了{{else}}{{.Stats.Done}}/{{.Stats.Total}}{{end}}</span>
+    </a></li>
+    {{end}}
+  </ul>
+</section>
+{{end}}
+
+<section class="card">
+  <h2>模試の得点</h2>
+  <p class="muted">目標は各回60点以上です。空欄で保存すると記録を消します。</p>
+  {{range .Mocks}}
+  <form method="post" action="{{$.Base}}/mocks/{{.ID}}" hx-post="{{$.Base}}/mocks/{{.ID}}" class="inline-form">
+    <input type="hidden" name="back" value="{{$.Back}}">
+    <label>{{.Label}}<input name="score" type="number" inputmode="numeric" min="0" max="100" {{if .Has}}value="{{.Score}}"{{end}} placeholder="点"></label>
+    <button type="submit">保存</button>
+    {{if .Has}}<span class="{{if ge .Score 60}}ok{{else}}warn{{end}}">{{if ge .Score 60}}合格ライン到達{{else}}あと{{sub 60 .Score}}点{{end}}</span>{{end}}
+  </form>
+  {{end}}
+</section>
+{{template "bottom" .}}{{end}}

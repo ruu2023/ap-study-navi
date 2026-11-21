@@ -1,0 +1,48 @@
+{{define "top"}}<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#f5f2ea" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141a19" media="(prefers-color-scheme: dark)">
+<title>AP科目B 学習ナビ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f6b5f'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="{{.Base}}/static/app.css?v={{.V}}">
+<script src="{{.Base}}/static/htmx.min.js?v={{.V}}" defer></script>
+<script src="{{.Base}}/static/app.js?v={{.V}}" defer></script>
+</head>
+<body hx-target="#page" hx-select="#page" hx-swap="outerHTML">
+<div id="page">
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><strong>AP科目B 学習ナビ</strong><span class="countdown">{{.Countdown}}</span></div>
+    {{if .Nav}}
+    <nav class="tabs" aria-label="画面の切り替え" hx-boost="true">
+      <a href="{{.Base}}/" {{if eq .Nav "today"}}aria-current="page"{{end}}>今日</a>
+      <a href="{{.Base}}/plan" {{if eq .Nav "plan"}}aria-current="page"{{end}}>計画</a>
+      <a href="{{.Base}}/log" {{if eq .Nav "log"}}aria-current="page"{{end}}>記録</a>
+      <a href="{{.Base}}/fields" {{if eq .Nav "fields"}}aria-current="page"{{end}}>分野</a>
+      <a href="{{.Base}}/phrases" {{if eq .Nav "phrases"}}aria-current="page"{{end}}>決まり文句</a>
+      <a href="{{.Base}}/exam" {{if eq .Nav "exam"}}aria-current="page"{{end}}>本番</a>
+    </nav>
+    {{end}}
+  </div>
+</header>
+<p id="flash" class="flash" role="alert" hidden></p>
+<main class="main">
+{{end}}
+
+{{define "bottom"}}
+</main>
+{{if .Nav}}
+<footer class="footer">
+  <form method="post" action="{{.Base}}/logout"><button type="submit" class="link-button">ログアウト</button></form>
+</footer>
+{{end}}
+</div>
+</body>
+</html>
+{{end}}
+
+{{define "links"}}{{range .}}<a href="{{index . 0}}" target="_blank" rel="noopener noreferrer">{{index . 1}}</a>{{end}}{{end}}

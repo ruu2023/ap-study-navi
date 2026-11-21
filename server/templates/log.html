@@ -1,0 +1,55 @@
+{{define "log"}}{{template "top" .}}
+<section class="card">
+  <h1>演習を記録する</h1>
+  <form method="post" action="{{.Base}}/sessions" hx-post="{{.Base}}/sessions" class="log-form">
+    <input type="hidden" name="back" value="{{.Back}}">
+    <label>日付<input name="date" type="date" value="{{.Today}}" required></label>
+    <label>時刻（任意）<input name="time_range" maxlength="30" placeholder="例：10:42〜10:50"></label>
+    <label>年度<select name="exam" required>{{range .Exams}}<option value="{{.Key}}">{{.Label}}</option>{{end}}</select></label>
+    <label>問題<select name="qno" required>{{range .Fields}}<option value="{{.No}}">{{.Label}}</option>{{end}}</select></label>
+    <label>所要時間（分）<input name="minutes" type="number" inputmode="numeric" min="0" max="300" placeholder="25"></label>
+    <label>正解数<input name="correct" type="number" inputmode="numeric" min="0" max="50" required></label>
+    <label>部分点（△）<input name="partial" type="number" inputmode="numeric" min="0" max="50" value="0"></label>
+    <label>設問数<input name="total" type="number" inputmode="numeric" min="1" max="50" required></label>
+    <label class="wide">メモ（間違えた理由・学んだこと）<textarea name="memo" rows="3" maxlength="2000"></textarea></label>
+    <button type="submit" class="primary wide">記録する</button>
+  </form>
+</section>
+
+<section class="card">
+  <h2>分野別の成績</h2>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>分野</th><th>回数</th><th>正答率</th><th>平均時間</th></tr></thead>
+    <tbody>
+    {{range .Stats}}
+      <tr><td>{{.Field.Label}}{{if .Role}} <span class="tag small{{if eq .Role "保険"}} muted-tag{{end}}">{{.Role}}</span>{{end}}</td>
+        <td>{{.Count}}</td><td><span class="{{if ge .Pct 60}}ok{{else}}warn{{end}}">{{.Pct}}%</span><small>（{{.Correct}}/{{.Total}}）</small></td>
+        <td>{{if .MinN}}{{.AvgMin}}分{{else}}-{{end}}</td></tr>
+    {{end}}
+    </tbody>
+  </table>
+  </div>
+  <p class="muted">正答率は部分点を含みません。目安は60%、時間は1問25分です。</p>
+</section>
+
+<section>
+  <h2 class="section-title">これまでの演習（{{len .Sessions}}件）</h2>
+  <ul class="sessions">
+  {{range .Sessions}}
+    <li class="card session">
+      <div class="session-head">
+        <span class="muted">{{short .Date}}{{if .TimeRange}} {{.TimeRange}}{{end}}{{if .Minutes.Valid}}・{{.Minutes.Int64}}分{{end}}</span>
+        <span class="score {{if ge .Pct 60}}ok{{else}}warn{{end}}">{{.Correct}}/{{.Total}}{{if .Partial}}（△{{.Partial}}）{{end}}</span>
+      </div>
+      <p class="task-title">{{.ExamLabel}} {{.Field.Label}}</p>
+      {{if .Memo}}<p class="memo">{{.Memo}}</p>{{end}}
+      <form method="post" action="{{$.Base}}/sessions/{{.ID}}/delete" hx-post="{{$.Base}}/sessions/{{.ID}}/delete" hx-confirm="この記録を削除しますか？">
+        <input type="hidden" name="back" value="{{$.Back}}">
+        <button type="submit" class="link-button small">削除</button>
+      </form>
+    </li>
+  {{end}}
+  </ul>
+</section>
+{{template "bottom" .}}{{end}}

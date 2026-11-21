@@ -1,0 +1,30 @@
+# Runs on lab-ruu (/opt/ap-study). Joins lab-ruu's network so its Caddy can
+# reach this container as ap-study:8080. Nothing is published on the host.
+name: ap-study
+
+services:
+  app:
+    image: ap-study:${APP_TAG:-latest}
+    container_name: ap-study
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      GOMEMLIMIT: 48MiB
+    volumes:
+      - data:/data
+    networks:
+      - lab-ruu
+    mem_limit: 96m
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "3"
+
+networks:
+  lab-ruu:
+    name: lab-ruu_default
+    external: true
+
+volumes:
+  data:

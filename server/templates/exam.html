@@ -1,0 +1,46 @@
+{{define "exam"}}{{template "top" .}}
+<section class="card hero">
+  <p class="eyebrow">11/29（日）17:00〜19:30・CBT</p>
+  <h1>本番の進め方</h1>
+  <p>問1と、メインから4分野を選んで解きます。開始直後に各問の設問をざっと見て、難しければ保険に切り替えます。</p>
+  <p class="field-line">
+    <span class="tag">必須</span> 問1 情報セキュリティ
+    {{range .Main}}<span class="tag">メイン</span> {{.Label}} {{end}}
+    {{range .Insurance}}<span class="tag muted-tag">保険</span> {{.Label}} {{end}}
+  </p>
+</section>
+<section class="card">
+  <h2>残り時間の目安</h2>
+  <ol class="timeline">
+    <li><b>150→140分</b>5問を選び、「選択」を押す</li>
+    <li><b>140→115分</b>1問目</li>
+    <li><b>115→90分</b>2問目</li>
+    <li><b>90→65分</b>3問目</li>
+    <li><b>65→40分</b>4問目</li>
+    <li><b>40→15分</b>5問目</li>
+    <li><b>15→0分</b>未解答の確認と見直し</li>
+  </ol>
+  <p class="muted">1問25分を超えたら、途中でも次の問題へ進みます。画面には時計がなく、残り時間だけが表示されます。時間切れの警告もありません。</p>
+</section>
+<div class="grid2">
+  <section class="card"><h2>CBTの注意点</h2><ul>
+    <li>問題文はコピーできません。</li>
+    <li>Ctrl+Cなどのキー操作は使えません。画面のボタンを使います。</li>
+    <li>上限文字数を超えた入力は削除されます。</li>
+    <li>入力方式は開始前に選び、入力欄で試します。</li>
+    <li>メモ用紙とボールペンは会場で配布されたものを使います。</li>
+  </ul></section>
+  <section class="card"><h2>記述のルール</h2><ul>
+    <li>設問を先に読み、探す内容を決めます。</li>
+    <li>答えの根拠になる本文の行に印を付けてから書きます。</li>
+    <li>主語・対象は本文の言葉、結論は決まり文句で書きます。</li>
+    <li>字数の8〜9割を埋めます。</li>
+    <li>早く終わったら、根拠の行を見直します。</li>
+  </ul></section>
+</div>
+<section class="card"><h2>当日の持ち物と時刻</h2><ul>
+  <li>有効な本人確認書類（ないと受験できません）</li>
+  <li>受付開始は16:30、集合は16:45です。</li>
+  <li>成績照会は2027年1月頃、合格発表は2027年2月頃です。</li>
+</ul></section>
+{{template "bottom" .}}{{end}}

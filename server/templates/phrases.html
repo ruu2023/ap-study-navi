@@ -1,0 +1,14 @@
+{{define "phrases"}}{{template "top" .}}
+<section class="card hero">
+  <h1>決まり文句</h1>
+  <p>何について書くか（主語・対象）は本文の言葉で、それがどうなのか（結論）は下の決まり文句で言い切ります。解答例から集めた言い回しです。</p>
+</section>
+{{range .Groups}}
+<section class="card">
+  <h2>{{.Field}}</h2>
+  <dl class="phrases">
+    {{range .Items}}<dt>{{index . 0}}</dt><dd>{{index . 1}}</dd>{{end}}
+  </dl>
+</section>
+{{end}}
+{{template "bottom" .}}{{end}}

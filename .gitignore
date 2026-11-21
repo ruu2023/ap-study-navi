@@ -3,6 +3,8 @@
 !.gitignore
 !docs/
 !docs/**
+!server/
+!server/**
 !notes/
 !notes/*.md
 !ap-kamoku-b-strategy-report.md

@@ -1,0 +1,27 @@
+{{define "fields"}}{{template "top" .}}
+<section class="card">
+  <h1>解く分野</h1>
+  <p>問1（情報セキュリティ）は必須です。残りの問2〜11からメインを4〜5分野選び（本番ではその中から4問）、難しかったときの保険も決めておきます。</p>
+  {{if .Saved}}<p class="ok">保存しました。</p>{{end}}
+  <p class="muted">現在：メイン{{.MainN}}分野・保険{{.InsN}}分野{{if lt .MainN 4}}（メインは4分野以上にしてください）{{end}}</p>
+</section>
+<form method="post" action="{{.Base}}/fields" hx-post="{{.Base}}/fields">
+  <ul class="field-list">
+  {{range .Stats}}
+    <li class="card field-row">
+      <div>
+        <p class="task-title">{{.Field.Label}}</p>
+        <p class="muted">{{if .Count}}{{.Count}}回・正答率 <span class="{{if ge .Pct 60}}ok{{else}}warn{{end}}">{{.Pct}}%</span>（{{.Correct}}/{{.Total}}）{{if .MinN}}・平均{{.AvgMin}}分{{end}}{{else}}未経験{{end}}</p>
+      </div>
+      <fieldset class="segmented">
+        <legend class="visually-hidden">{{.Field.Label}}の扱い</legend>
+        <label><input type="radio" name="role_{{.Field.Code}}" value="main" {{if eq .Role "メイン"}}checked{{end}}>メイン</label>
+        <label><input type="radio" name="role_{{.Field.Code}}" value="insurance" {{if eq .Role "保険"}}checked{{end}}>保険</label>
+        <label><input type="radio" name="role_{{.Field.Code}}" value="" {{if eq .Role ""}}checked{{end}}>解かない</label>
+      </fieldset>
+    </li>
+  {{end}}
+  </ul>
+  <button type="submit" class="primary block">保存する</button>
+</form>
+{{template "bottom" .}}{{end}}
