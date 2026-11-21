@@ -153,15 +153,17 @@ var days = []Day{
 		Point: "間違いは「知識不足・読み落とし・表現ミス」に分類します。",
 		Tasks: []Task{
 			q("d21-a1", "r6h", 1), q("d21-a9", "r6h", 9), q("d21-a10", "r6h", 10), q("d21-a11", "r6h", 11),
-			q("d21-b1", "r5h", 1), q("d21-b9", "r5h", 9), q("d21-b10", "r5h", 10), q("d21-b11", "r5h", 11),
+			q("d21-b1", "r5h", 1), q("d21-b9", "r5h", 9), q("d21-b10", "r5h", 10),
+			q("d21-b2", "r5h", 2), // moved from 11/22 (solved on 11/21)
+			q("d21-b11", "r5h", 11),
 		},
 	},
 	{
 		Date: "2026-11-22", Dow: "日", Phase: "分野別演習", Title: "新しい主力分野を試し、型をつかむ",
-		Goal: "経営戦略とネットワークを2年度分解き、保険の組込みも一度試します。", Finish: "主力4分野と保険2分野をすべて1回以上解いた。",
+		Goal: "経営戦略とネットワークを2問ずつ解き、保険の監査と組込みも1問ずつ試します。", Finish: "メイン4分野と保険2分野をすべて1回以上解いた。",
 		Point: "今日は25分を必ず使い切ります。早く終わったら、根拠の行を見直します。",
 		Tasks: []Task{
-			q("d22-st-a", "r6h", 2), q("d22-st-b", "r5h", 2),
+			q("d22-st-a", "r6h", 2), q("d22-st-b2", "r4a", 2),
 			q("d22-nw-a", "r6h", 5), q("d22-nw-b", "r5h", 5),
 			q("d22-au", "r5a", 11), q("d22-es", "r6h", 7),
 			t("d22-note", "決まり文句ノートを更新する", 60, "今日の解答例から、分野ごとの言い回しを「決まり文句」タブに足す。"),
@@ -262,13 +264,13 @@ func taskExists(id string) bool {
 	return false
 }
 
-// Default field choice decided on 11/21 (DB added to メイン the same day).
-// メイン may hold 5 candidates; 4 of them are picked on exam day.
+// Field choice settled on 11/21: 4 メイン (solved on exam day with 問1) and
+// 2 保険. メイン may temporarily hold up to 5 while deciding.
 const maxMain = 5
 
 var (
-	defaultMain      = []string{"st", "pm", "nw", "au", "db"}
-	defaultInsurance = []string{"es", "sm"}
+	defaultMain      = []string{"db", "st", "nw", "pm"}
+	defaultInsurance = []string{"au", "es"}
 )
 
 // Phrase groups for the 決まり文句 page.

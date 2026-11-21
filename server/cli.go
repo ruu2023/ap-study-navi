@@ -57,6 +57,31 @@ func runCLI(args []string) int {
 		for _, s := range list {
 			fmt.Printf("%d\t%s\t%s\t%s %s\t%d/%d\n", s.ID, s.Date, s.TimeRange, s.ExamLabel(), s.Field().Label(), s.Correct, s.Total)
 		}
+	case "task-done":
+		fs := flag.NewFlagSet("task-done", flag.ContinueOnError)
+		undo := fs.Bool("undo", false, "mark as not done instead")
+		if err := fs.Parse(args[1:]); err != nil {
+			return 2
+		}
+		done, err := store.DoneSet()
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			return 1
+		}
+		for _, id := range fs.Args() {
+			if !taskExists(id) {
+				fmt.Fprintln(os.Stderr, "unknown task:", id)
+				return 2
+			}
+			if done[id] == !*undo {
+				continue // already in the requested state
+			}
+			if _, err := store.ToggleTask(id); err != nil {
+				fmt.Fprintln(os.Stderr, err)
+				return 1
+			}
+		}
+		fmt.Println("ok")
 	case "fields-set":
 		fs := flag.NewFlagSet("fields-set", flag.ContinueOnError)
 		main := fs.String("main", "", "comma-separated codes, e.g. st,pm,nw,au,db")
@@ -89,7 +114,7 @@ func runCLI(args []string) int {
 		}
 		fmt.Println("saved")
 	default:
-		fmt.Fprintln(os.Stderr, "usage: ap-study [session-add|sessions|fields-set] ...")
+		fmt.Fprintln(os.Stderr, "usage: ap-study [session-add|sessions|task-done|fields-set] ...")
 		return 2
 	}
 	return 0
